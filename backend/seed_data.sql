@@ -1,7 +1,15 @@
+
+
 INSERT INTO operarios (id, numero_operario, nombre, activo, rol)
 SELECT gen_random_uuid(), i, 'Operario ' || i::text, true, 'Operario'
-FROM generate_series(1, 100) AS t(i)
-ON CONFLICT DO NOTHING;
+FROM generate_series(2, 100) AS t(i)
+ON CONFLICT (numero_operario) DO NOTHING;
+
+-- 2. Insertamos o ACTUALIZAMOS el operario 1 para que siempre sea Admin
+INSERT INTO operarios (id, numero_operario, nombre, activo, rol)
+VALUES (gen_random_uuid(), 1, 'Operario Principal', true, 'Admin')
+ON CONFLICT (numero_operario) 
+DO UPDATE SET rol = 'Admin', nombre = 'Operario Principal';
 
 COMMIT;
 
