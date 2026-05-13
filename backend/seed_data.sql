@@ -23,29 +23,29 @@ INSERT INTO tipos_operacion (id, tipo) VALUES
 ON CONFLICT DO NOTHING;
 
 -- Tipos de Eventos (NUEVO: Moviéndolo arriba)
-INSERT INTO tipos_evento (id, nombre, descripcion) VALUES 
-(1, 'Producción', 'Trabajo activo'),
-(2, 'Paro', 'Parada de máquina'),
-(3, 'Setup', 'Configuración'),
-(4, 'Descanso', 'Pausa')
+INSERT INTO tipos_evento (id, tipo) VALUES 
+(1, 'Producción'),
+(2, 'Paro'),
+(3, 'Setup'),
+(4, 'Descanso')
 ON CONFLICT DO NOTHING;
 
 -- Tipos de Incidencia (NUEVO: Moviéndolo arriba)
-INSERT INTO tipos_incidencia (id, nombre, descripcion) VALUES 
-(1, 'Falta de Material', 'No hay componentes suficientes para continuar la producción'),
-(2, 'Avería Mecánica', 'Fallo físico en la maquinaria o herramientas'),
-(3, 'Fallo Eléctrico', 'Problemas de suministro o componentes electrónicos'),
-(4, 'Ajuste de Parámetros', 'Necesidad de reconfigurar la máquina por desviaciones'),
-(5, 'Ausencia de Operario', 'Parada por relevo o falta de personal')
+INSERT INTO tipos_incidencia (id, tipo) VALUES 
+(1, 'Falta de Material'),
+(2, 'Avería Mecánica'),
+(3, 'Fallo Eléctrico'),
+(4, 'Ajuste de Parámetros'),
+(5, 'Ausencia de Operario')
 ON CONFLICT DO NOTHING;
 
 -- Tipos de Rechazo (NUEVO: Moviéndolo arriba)
-INSERT INTO tipos_rechazo (id, nombre, descripcion) VALUES 
-(1, 'Defecto Estético', 'La pieza presenta rayaduras o fallos visuales en el acabado'),
-(2, 'Dimensiones Fuera de Rango', 'La pieza no cumple con las medidas especificadas en el plano'),
-(3, 'Material Defectuoso', 'Materia prima con porosidades o impurezas'),
-(4, 'Error de Montaje', 'Componentes mal ensamblados durante el proceso'),
-(5, 'Prueba de Setup', 'Piezas descartadas durante la configuración inicial')
+INSERT INTO tipos_rechazo (id, motivo) VALUES 
+(1, 'Defecto Estético'),
+(2, 'Dimensiones Fuera de Rango'),
+(3, 'Material Defectuoso'),
+(4, 'Error de Montaje'),
+(5, 'Prueba de Setup')
 ON CONFLICT DO NOTHING;
 
 COMMIT;
