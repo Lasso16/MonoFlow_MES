@@ -1,22 +1,54 @@
 
 
+-- ==========================================
+-- 1. CATÁLOGOS Y TABLAS MAESTRAS (Obligatorio que vayan primero)
+-- ==========================================
+
+-- Operarios (Del 2 al 100)
 INSERT INTO operarios (id, numero_operario, nombre, activo, rol)
 SELECT gen_random_uuid(), i, 'Operario ' || i::text, true, 'Operario'
 FROM generate_series(2, 100) AS t(i)
 ON CONFLICT (numero_operario) DO NOTHING;
 
--- 2. Insertamos o ACTUALIZAMOS el operario 1 para que siempre sea Admin
+-- Operario Principal
 INSERT INTO operarios (id, numero_operario, nombre, activo, rol)
 VALUES (gen_random_uuid(), 1, 'Operario Principal', true, 'Admin')
 ON CONFLICT (numero_operario) 
 DO UPDATE SET rol = 'Admin', nombre = 'Operario Principal';
 
-COMMIT;
-
 -- Tipos de operación
-INSERT INTO tipos_operacion (tipo) VALUES ('Ensamblaje'), ('Control de Calidad')
+INSERT INTO tipos_operacion (id, tipo) VALUES 
+(1, 'Ensamblaje'), 
+(2, 'Control de Calidad')
 ON CONFLICT DO NOTHING;
 
+-- Tipos de Eventos (NUEVO: Moviéndolo arriba)
+INSERT INTO tipos_evento (id, nombre, descripcion) VALUES 
+(1, 'Producción', 'Trabajo activo'),
+(2, 'Paro', 'Parada de máquina'),
+(3, 'Setup', 'Configuración'),
+(4, 'Descanso', 'Pausa')
+ON CONFLICT DO NOTHING;
+
+-- Tipos de Incidencia (NUEVO: Moviéndolo arriba)
+INSERT INTO tipos_incidencia (id, nombre, descripcion) VALUES 
+(1, 'Falta de Material', 'No hay componentes suficientes para continuar la producción'),
+(2, 'Avería Mecánica', 'Fallo físico en la maquinaria o herramientas'),
+(3, 'Fallo Eléctrico', 'Problemas de suministro o componentes electrónicos'),
+(4, 'Ajuste de Parámetros', 'Necesidad de reconfigurar la máquina por desviaciones'),
+(5, 'Ausencia de Operario', 'Parada por relevo o falta de personal')
+ON CONFLICT DO NOTHING;
+
+-- Tipos de Rechazo (NUEVO: Moviéndolo arriba)
+INSERT INTO tipos_rechazo (id, nombre, descripcion) VALUES 
+(1, 'Defecto Estético', 'La pieza presenta rayaduras o fallos visuales en el acabado'),
+(2, 'Dimensiones Fuera de Rango', 'La pieza no cumple con las medidas especificadas en el plano'),
+(3, 'Material Defectuoso', 'Materia prima con porosidades o impurezas'),
+(4, 'Error de Montaje', 'Componentes mal ensamblados durante el proceso'),
+(5, 'Prueba de Setup', 'Piezas descartadas durante la configuración inicial')
+ON CONFLICT DO NOTHING;
+
+COMMIT;
 -- Órdenes
 WITH order_ids AS (
     SELECT 
