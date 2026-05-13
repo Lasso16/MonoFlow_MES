@@ -1,3 +1,5 @@
+[English](./README.en.md) | **Español**
+
 # MonoFlow MES
 
 Sistema de Ejecucion de Manufactura (MES) para gestion de ordenes de produccion, operarios, operaciones y registro de trabajo en planta.
