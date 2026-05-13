@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   getEventoColor,
   getSortTime,
@@ -16,6 +16,7 @@ export const useTerminalHistoryData = (
   isHistoryExpanded = false
 ) => {
   const [now, setNow] = useState(() => Date.now());
+  const firstSeenRef = useRef<Map<string, number>>(new Map());
   const { data: tiposEvento = [] } = useGetTiposEvento();
 
   // 1. Mapeo de Tipos
@@ -85,9 +86,14 @@ export const useTerminalHistoryData = (
   }, [hasLiveEvent]);
 
   // 5. Filtro Final
-  const eventosConDuracion = useMemo(() => eventosEnriquecidos.map((e) => 
-    (e.fin || typeof e.inicioMs !== 'number') ? e : { ...e, duracionMs: Math.max(0, now - e.inicioMs) }
-  ), [eventosEnriquecidos, now]);
+  const eventosConDuracion = useMemo(() => eventosEnriquecidos.map((e) => {
+    if (e.fin || typeof e.inicioMs !== 'number') return e;
+    if (!firstSeenRef.current.has(e.id)) {
+      firstSeenRef.current.set(e.id, Date.now());
+    }
+    const firstSeen = firstSeenRef.current.get(e.id)!;
+    return { ...e, duracionMs: Math.max(0, now - firstSeen) };
+  }), [eventosEnriquecidos, now]);
 
   const eventosVisibles = useMemo(() => 
     isHistoryExpanded ? eventosConDuracion : eventosConDuracion.slice(0, 1), 

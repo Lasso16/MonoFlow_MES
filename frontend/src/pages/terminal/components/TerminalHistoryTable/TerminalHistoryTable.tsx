@@ -6,7 +6,6 @@ import { formatDuracion, formatHora, getHistoryChipClass, getHistoryLiveClass } 
 import styles from './TerminalHistoryTable.module.css';
 import { useTerminalHistoryData } from '../../hooks/useTerminalHistoryData';
 
-// Subcomponente para los mensajes de estado (Cargando, Error, Vacío) para no ensuciar la tabla principal
 const StatusRow = ({ children }: { children: React.ReactNode }) => (
   <TableRow>
     <TableCell colSpan={4}>
@@ -25,7 +24,6 @@ export const TerminalHistoryTable = memo(({
 }: TerminalHistoryTableProps) => {
   const [isHistoryExpanded, setIsHistoryExpanded] = useState(false);
   
-  // ¡Aquí usamos nuestro nuevo Custom Hook!
   const { eventosVisibles, hasMultipleEvents, totalEventos } = useTerminalHistoryData(registroActualOperacion, isHistoryExpanded);
 
   return (

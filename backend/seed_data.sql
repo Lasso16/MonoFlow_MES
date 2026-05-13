@@ -24,10 +24,12 @@ ON CONFLICT DO NOTHING;
 
 -- Tipos de Eventos (NUEVO: Moviéndolo arriba)
 INSERT INTO tipos_evento (id, tipo) VALUES 
-(1, 'Producción'),
-(2, 'Paro'),
-(3, 'Setup'),
-(4, 'Descanso')
+(1, 'Preparación'),
+(2, 'Ejecución'),
+(3, 'Incidencia'),
+(4, 'Pausa'),
+(5, 'Recogida'),
+(6, 'Última Recogida')
 ON CONFLICT DO NOTHING;
 
 -- Tipos de Incidencia (NUEVO: Moviéndolo arriba)
