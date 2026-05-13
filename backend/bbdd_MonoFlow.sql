@@ -1,0 +1,134 @@
+﻿CREATE DATABASE MonoFlow;
+GO
+
+USE MonoFlow;
+GO
+
+-- 1. TABLAS MAESTRAS (CATÁLOGOS)
+--------------------------------------------------------------------------------
+
+CREATE TABLE ORDEN (
+    id NVARCHAR(20) NOT NULL,
+    estado NVARCHAR(20),
+    descripcion NVARCHAR(255),
+    cliente NVARCHAR(100),
+    cod_procedencia NVARCHAR(20),
+    CONSTRAINT PK_ORDEN PRIMARY KEY (id)
+);
+
+CREATE TABLE OPERACION (
+    id INT IDENTITY(1,1) NOT NULL,
+    descripcion NVARCHAR(255),
+    CONSTRAINT PK_OPERACION PRIMARY KEY (id)
+);
+
+CREATE TABLE EMPLEADO (
+    id INT NOT NULL,
+    nombre NVARCHAR(100),
+    CONSTRAINT PK_EMPLEADO PRIMARY KEY (id)
+);
+
+CREATE TABLE EQUIPO (
+    id INT IDENTITY(1,1) NOT NULL,
+    activo BIT NOT NULL DEFAULT 1,
+    CONSTRAINT PK_EQUIPO PRIMARY KEY (id)
+);
+
+CREATE TABLE TIPO_INCIDENCIA (
+    id INT IDENTITY(1,1) NOT NULL,
+    concepto NVARCHAR(100),
+    CONSTRAINT PK_TIPO_INCIDENCIA PRIMARY KEY (id)
+);
+
+CREATE TABLE TIPO_INTERVALO (
+    id INT IDENTITY(1,1) NOT NULL,
+    tipo NVARCHAR(50),
+    CONSTRAINT PK_TIPO_INTERVALO PRIMARY KEY (id)
+);
+
+CREATE TABLE ESTADO_INTERVALO (
+    id INT IDENTITY(1,1) NOT NULL,
+    estado NVARCHAR(50),
+    CONSTRAINT PK_ESTADO_INTERVALO PRIMARY KEY (id)
+);
+
+-- 2. TABLAS INTERMEDIAS Y DE ESTRUCTURA
+--------------------------------------------------------------------------------
+
+CREATE TABLE EMPLEADO_EQUIPO (
+    id_empleado INT NOT NULL,
+    id_equipo INT NOT NULL,
+    fecha_registro DATETIME DEFAULT GETDATE(),
+    CONSTRAINT PK_EMPLEADO_EQUIPO PRIMARY KEY (id_empleado, id_equipo),
+    CONSTRAINT FK_EMP_EQUIPO_EMP FOREIGN KEY (id_empleado) REFERENCES EMPLEADO (id),
+    CONSTRAINT FK_EMP_EQUIPO_EQUIPO FOREIGN KEY (id_equipo) REFERENCES EQUIPO (id)
+);
+
+CREATE TABLE ARTICULO (
+    id_articulo NVARCHAR(50) NOT NULL,
+    id_orden NVARCHAR(20) NOT NULL,
+    cantidad INT,
+    descripcion NVARCHAR(255),
+    f_inicio DATETIME,
+    f_final DATETIME,
+    ultima_actualizacion DATETIME,
+    CONSTRAINT PK_ARTICULO PRIMARY KEY (id_orden, id_articulo),
+    CONSTRAINT FK_ARTICULO_ORDEN FOREIGN KEY (id_orden) REFERENCES ORDEN (id)
+);
+
+CREATE TABLE FASE (
+    id INT IDENTITY(1,1) NOT NULL,
+    id_orden NVARCHAR(20) NOT NULL,
+    id_articulo NVARCHAR(50) NOT NULL,
+    id_operacion INT NOT NULL,
+    ultima_fase BIT DEFAULT 0,
+    estado NVARCHAR(20),
+    cantidad_componentes INT,
+    f_inicio DATETIME,
+    f_fin DATETIME,
+    CONSTRAINT PK_FASE PRIMARY KEY (id),
+    CONSTRAINT FK_FASE_ARTICULO FOREIGN KEY (id_orden, id_articulo) REFERENCES ARTICULO (id_orden, id_articulo),
+    CONSTRAINT FK_FASE_OPERACION FOREIGN KEY (id_operacion) REFERENCES OPERACION (id)
+);
+
+-- 3. REGISTROS DE TRABAJO Y TIEMPOS
+--------------------------------------------------------------------------------
+
+CREATE TABLE REGISTRO_TRABAJO (
+    id INT IDENTITY(1,1) NOT NULL,
+    id_fase INT NOT NULL,
+    id_equipo INT NOT NULL,
+    uds_realizadas INT DEFAULT 0,
+    uds_rechazadas INT DEFAULT 0,
+    observaciones NVARCHAR(MAX),
+    f_inicio DATETIME NOT NULL DEFAULT GETDATE(),
+    f_fin DATETIME,
+    CONSTRAINT PK_REGISTRO_TRABAJO PRIMARY KEY (id),
+    CONSTRAINT UK_REGISTRO_EQUIPO UNIQUE (id_equipo), -- Un equipo solo puede tener un registro activo/total según diseño actual
+    CONSTRAINT FK_REGISTRO_FASE FOREIGN KEY (id_fase) REFERENCES FASE (id),
+    CONSTRAINT FK_REGISTRO_EQUIPO FOREIGN KEY (id_equipo) REFERENCES EQUIPO (id)
+);
+
+CREATE TABLE INTERVALO (
+    id INT IDENTITY(1,1) NOT NULL,
+    id_registro_trabajo INT NOT NULL,
+    id_tipo INT NOT NULL,
+    id_estado INT NOT NULL,
+    inicio DATETIME NOT NULL,
+    fin DATETIME,
+    CONSTRAINT PK_INTERVALO PRIMARY KEY (id),
+    CONSTRAINT FK_INTERVALO_REGISTRO FOREIGN KEY (id_registro_trabajo) REFERENCES REGISTRO_TRABAJO (id),
+    CONSTRAINT FK_INTERVALO_TIPO FOREIGN KEY (id_tipo) REFERENCES TIPO_INTERVALO (id),
+    CONSTRAINT FK_INTERVALO_ESTADO FOREIGN KEY (id_estado) REFERENCES ESTADO_INTERVALO (id)
+);
+
+CREATE TABLE INCIDENCIA (
+    id INT IDENTITY(1,1) NOT NULL,
+    id_tipo INT NOT NULL,
+    id_intervalo INT NOT NULL,
+    descripcion NVARCHAR(MAX),
+    CONSTRAINT PK_INCIDENCIA PRIMARY KEY (id),
+    CONSTRAINT FK_INCIDENCIA_TIPO FOREIGN KEY (id_tipo) REFERENCES TIPO_INCIDENCIA (id),
+    CONSTRAINT FK_INCIDENCIA_INTERVALO FOREIGN KEY (id_intervalo) REFERENCES INTERVALO (id)
+);
+GO

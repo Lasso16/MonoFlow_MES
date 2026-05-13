@@ -1,0 +1,128 @@
+.team-card {
+  border-radius: 10px !important;
+  padding: 1rem !important;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.team-card-title {
+  font-weight: 800 !important;
+}
+
+.team-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem
+}
+
+.team-lock-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.team-lock-icon {
+  color: #475569;
+}
+
+.team-lock-switch {
+  color: #475569 !important;
+}
+
+.team-lock-switch :global(.MuiSwitch-switchBase.Mui-checked) {
+  color: #2563eb !important;
+}
+
+.team-lock-switch :global(.MuiSwitch-switchBase.Mui-checked) + :global(.MuiSwitch-track) {
+  background-color: #93c5fd !important;
+}
+
+.team-content-wrap {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.team-search-area {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.team-search-input {
+  margin-bottom: 0 !important;
+  border-radius: 10px !important;
+}
+
+.team-search-results-wrap {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  max-height: 160px;
+  overflow-y: auto;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.team-search-item {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.team-search-item:last-child {
+  border-bottom: 0;
+}
+
+.team-loading-wrap {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-empty-search {
+  display: block;
+  padding: 10px;
+}
+
+.team-chip-list-scroll {
+  margin-top: auto;
+  height: 200px;
+  min-height: 200px;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.team-selected-list {
+  width: 100%;
+}
+
+.team-selected-row {
+  border-bottom: 1px solid #f1f5f9;
+  padding-right: 40px !important;
+  min-height: 48px;
+}
+
+.team-selected-row:last-child {
+  border-bottom: 0;
+}
+
+.team-selected-row :global(.MuiListItemText-primary) {
+  font-weight: 600;
+}
+
+.team-empty-selected {
+  display: block;
+  padding: 8px;
+}

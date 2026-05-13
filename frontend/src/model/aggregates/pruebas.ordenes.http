@@ -1,0 +1,64 @@
+@baseUrl = https://localhost:7223
+@ordenId = 31b108c1-6fa7-490a-2f8a-08de99f882f8
+@idNavision = NAV-prueba
+
+### Listar ordenes
+GET {{baseUrl}}/ordenes?IdNavision={{idNavision}}
+
+### Filtrar ordenes por estado
+GET {{baseUrl}}/ordenes?Estado=1
+
+### Filtrar ordenes por IdNavision
+GET {{baseUrl}}/ordenes?IdNavision={{idNavision}}
+
+### Filtrar ordenes por cliente
+GET {{baseUrl}}/ordenes?Cliente=string
+
+### Obtener orden por id
+GET {{baseUrl}}/ordenes/{{ordenId}}
+
+### Obtener orden por id navision
+
+### Estado de planta
+GET {{baseUrl}}/ordenes/estado-planta
+
+### Obtener articulos de una orden
+GET {{baseUrl}}/ordenes/{{ordenId}}/articulos
+
+### Crear orden
+POST {{baseUrl}}/ordenes
+Content-Type: application/json
+
+{
+  "idNavision": "NAV-prueba",
+  "descripcion": "Orden creada desde HTTP client",
+  "cliente": "Cliente demo",
+  "codigoProcedencia": "INT"
+}
+
+### Actualizar orden
+PUT {{baseUrl}}/ordenes/{{ordenId}}
+Content-Type: application/json
+
+{
+  "descripcion": "Orden actualizada",
+  "cliente": "Cliente actualizado",
+  "codigoProcedencia": "EXT"
+}
+
+### Agregar articulo a orden
+POST {{baseUrl}}/ordenes/{{ordenId}}/articulos
+Content-Type: application/json
+
+{
+  "referencia": "ART-003",
+  "linea": 1,
+  "cantidad": 10,
+  "descripcion": "Articulo agregado desde HTTP client"
+}
+
+### Finalizar orden
+POST {{baseUrl}}/ordenes/{{ordenId}}/finalizar
+
+### Eliminar orden
+DELETE {{baseUrl}}/ordenes/{{ordenId}}

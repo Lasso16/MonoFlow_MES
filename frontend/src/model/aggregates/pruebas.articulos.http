@@ -1,0 +1,37 @@
+@baseUrl = https://localhost:7223
+@articuloId = 21e76ca6-0654-4eba-7dab-08de99f91848
+
+### Listar articulos (paginado)
+GET {{baseUrl}}/articulos?pageNumber=1&pageSize=20
+
+### Obtener articulo por id
+GET {{baseUrl}}/articulos/{{articuloId}}
+
+### Obtener operaciones de un articulo
+GET {{baseUrl}}/articulos/{{articuloId}}/operaciones
+
+### Crear operacion en articulo
+POST {{baseUrl}}/articulos/{{articuloId}}/operaciones
+Content-Type: application/json
+
+{
+  "idTipoOperacion": 2,
+  "cantidadComponentes": 1,
+  "tiempoPlan": 45,
+  "ultimaOperacion": false
+}
+
+### Actualizar articulo
+PUT {{baseUrl}}/articulos/{{articuloId}}
+Content-Type: application/json
+
+{
+  "referencia": "REF-001",
+  "descripcion": "Articulo actualizado desde HTTP client",
+  "linea": 10,
+  "cantidad": 25,
+  "estado": "EnProceso"
+}
+
+### Eliminar articulo
+DELETE {{baseUrl}}/articulos/{{articuloId}}

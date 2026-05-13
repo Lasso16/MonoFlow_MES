@@ -1,0 +1,70 @@
+@baseUrl = https://localhost:7223
+@operacionId = 657182D6-C38E-4C24-CEDE-08DE99FA801D
+
+### Abrir registro de trabajo
+POST {{baseUrl}}/operaciones/{{operacionId}}/registro-trabajo/abrir
+Content-Type: application/json
+
+{
+  "idOperarios": [
+    "519E95D3-0CBA-4018-BE68-08DE80F5A44E",
+    "6333DDAE-BDA7-4154-BED2-FA79A1DA26C6"
+  ]
+}
+
+### Finalizar registro de trabajo
+PUT {{baseUrl}}/operaciones/{{operacionId}}/registro-trabajo/finalizar
+Content-Type: application/json
+
+{}
+
+### Crear observacion
+POST {{baseUrl}}/operaciones/{{operacionId}}/registro-trabajo/observaciones
+Content-Type: application/json
+
+{
+  "observacion": "Primera observacion"
+}
+
+### Actualizar observacion
+PUT {{baseUrl}}/operaciones/{{operacionId}}/registro-trabajo/observaciones
+Content-Type: application/json
+
+{
+  "observacion": "Segunda observacion"
+}
+
+### Registrar produccion
+POST {{baseUrl}}/operaciones/{{operacionId}}/registro-trabajo/produccion
+Content-Type: application/json
+
+{
+  "cantidad": 1
+}
+
+### Registrar rechazo
+POST {{baseUrl}}/operaciones/{{operacionId}}/registro-trabajo/rechazo
+Content-Type: application/json
+
+{
+  "cantidad": 1,
+  "idTipoRechazo": 1,
+  "comentario": "Rechazo de prueba"
+}
+
+### Registrar evento
+POST {{baseUrl}}/operaciones/{{operacionId}}/registro-trabajo/evento
+Content-Type: application/json
+
+{
+  "idTipoEvento": 7
+}
+
+### Registrar incidencia
+POST {{baseUrl}}/operaciones/{{operacionId}}/registro-trabajo/incidencia
+Content-Type: application/json
+
+{
+  "idTipoIncidencia": 1,
+  "comentario": "Incidencia de prueba"
+}

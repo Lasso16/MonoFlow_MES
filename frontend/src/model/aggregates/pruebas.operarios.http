@@ -1,0 +1,47 @@
+@baseUrl = https://localhost:7223
+@operarioId = 519E95D3-0CBA-4018-BE68-08DE80F5A44E
+@numeroOperario = 1001
+
+### Listar operarios
+GET {{baseUrl}}/operarios
+
+### Filtrar operarios por nombre
+GET {{baseUrl}}/operarios?Nombre=jav
+
+### Filtrar operarios por numero
+GET {{baseUrl}}/operarios?NumeroOperario={{numeroOperario}}
+
+### Filtrar operarios por activo
+GET {{baseUrl}}/operarios?Activo=true
+
+### Obtener operario por id
+GET {{baseUrl}}/operarios/{{operarioId}}
+
+### Crear operario
+POST {{baseUrl}}/operarios
+Content-Type: application/json
+
+{
+  "numeroOperario": 2001,
+  "nombre": "Operario de prueba"
+}
+
+### Actualizar operario
+PUT {{baseUrl}}/operarios/{{operarioId}}
+Content-Type: application/json
+
+{
+  "nombre": "Operario actualizado"
+}
+
+### Cerrar sesion operario
+PUT {{baseUrl}}/operarios/{{operarioId}}/cerrar-sesion
+Content-Type: application/json
+
+{}
+
+### Obtener registro activo del operario
+GET {{baseUrl}}/operarios/{{operarioId}}/registro-activo
+
+### Eliminar operario
+DELETE {{baseUrl}}/operarios/{{operarioId}}

@@ -1,0 +1,251 @@
+.history-card {
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.history-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.history-title {
+  font-weight: 800 !important;
+}
+
+.history-loading-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.history-event-chip {
+  font-weight: 700 !important;
+  border: 1px solid transparent;
+}
+
+.history-event-pendiente {
+  background: rgba(158, 158, 158, 0.16) !important;
+  color: #9e9e9e !important;
+  border-color: rgba(158, 158, 158, 0.36) !important;
+}
+
+.history-event-enpreparacion {
+  background: rgba(79, 195, 247, 0.16) !important;
+  color: #4fc3f7 !important;
+  border-color: rgba(79, 195, 247, 0.36) !important;
+}
+
+.history-event-enejecucion {
+  background: rgba(102, 187, 106, 0.16) !important;
+  color: #66bb6a !important;
+  border-color: rgba(102, 187, 106, 0.36) !important;
+}
+
+.history-event-enrecogida {
+  background: rgba(38, 166, 154, 0.16) !important;
+  color: #26a69a !important;
+  border-color: rgba(38, 166, 154, 0.36) !important;
+}
+
+.history-event-finproduccion {
+  background: rgba(27, 94, 32, 0.16) !important;
+  color: #1b5e20 !important;
+  border-color: rgba(27, 94, 32, 0.36) !important;
+}
+
+.history-event-incidentado {
+  background: rgba(211, 47, 47, 0.16) !important;
+  color: #d32f2f !important;
+  border-color: rgba(211, 47, 47, 0.36) !important;
+}
+
+.history-event-pausado {
+  background: rgba(255, 179, 0, 0.2) !important;
+  color: #ffb300 !important;
+  border-color: rgba(255, 179, 0, 0.42) !important;
+}
+
+.history-event-detenido {
+  background: rgba(161, 136, 127, 0.18) !important;
+  color: #a1887f !important;
+  border-color: rgba(161, 136, 127, 0.4) !important;
+}
+
+.history-event-desconocido {
+  background: rgba(51, 65, 85, 0.12) !important;
+  color: #334155 !important;
+  border-color: rgba(51, 65, 85, 0.28) !important;
+}
+
+.history-toggle-row {
+  cursor: pointer;
+  background: #f8fafc;
+}
+
+.history-toggle-text {
+  font-weight: 700 !important;
+  color: #212121;
+  text-align: center;
+}
+
+.history-time {
+  font-family: monospace !important;
+  vertical-align: middle;
+}
+
+.history-live-cell {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.history-live-timer {
+  --live-accent: #1976d2;
+  --live-accent-soft: rgba(25, 118, 210, 0.12);
+  --live-accent-soft-2: rgba(25, 118, 210, 0.04);
+  --live-accent-border: rgba(25, 118, 210, 0.18);
+  --live-accent-pulse: rgba(25, 118, 210, 0.45);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--live-accent-soft), var(--live-accent-soft-2));
+  border: 1px solid var(--live-accent-border);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.history-live-pendiente {
+  --live-accent: #9e9e9e;
+  --live-accent-soft: rgba(158, 158, 158, 0.16);
+  --live-accent-soft-2: rgba(158, 158, 158, 0.05);
+  --live-accent-border: rgba(158, 158, 158, 0.25);
+  --live-accent-pulse: rgba(158, 158, 158, 0.45);
+}
+
+.history-live-enpreparacion {
+  --live-accent: #4fc3f7;
+  --live-accent-soft: rgba(79, 195, 247, 0.16);
+  --live-accent-soft-2: rgba(79, 195, 247, 0.05);
+  --live-accent-border: rgba(79, 195, 247, 0.25);
+  --live-accent-pulse: rgba(79, 195, 247, 0.45);
+}
+
+.history-live-enejecucion {
+  --live-accent: #66bb6a;
+  --live-accent-soft: rgba(102, 187, 106, 0.16);
+  --live-accent-soft-2: rgba(102, 187, 106, 0.05);
+  --live-accent-border: rgba(102, 187, 106, 0.25);
+  --live-accent-pulse: rgba(102, 187, 106, 0.45);
+}
+
+.history-live-enrecogida {
+  --live-accent: #26a69a;
+  --live-accent-soft: rgba(38, 166, 154, 0.16);
+  --live-accent-soft-2: rgba(38, 166, 154, 0.05);
+  --live-accent-border: rgba(38, 166, 154, 0.25);
+  --live-accent-pulse: rgba(38, 166, 154, 0.45);
+}
+
+.history-live-finproduccion {
+  --live-accent: #1b5e20;
+  --live-accent-soft: rgba(27, 94, 32, 0.16);
+  --live-accent-soft-2: rgba(27, 94, 32, 0.05);
+  --live-accent-border: rgba(27, 94, 32, 0.25);
+  --live-accent-pulse: rgba(27, 94, 32, 0.45);
+}
+
+.history-live-incidentado {
+  --live-accent: #d32f2f;
+  --live-accent-soft: rgba(211, 47, 47, 0.16);
+  --live-accent-soft-2: rgba(211, 47, 47, 0.05);
+  --live-accent-border: rgba(211, 47, 47, 0.25);
+  --live-accent-pulse: rgba(211, 47, 47, 0.45);
+}
+
+.history-live-pausado {
+  --live-accent: #ffb300;
+  --live-accent-soft: rgba(255, 179, 0, 0.2);
+  --live-accent-soft-2: rgba(255, 179, 0, 0.06);
+  --live-accent-border: rgba(255, 179, 0, 0.3);
+  --live-accent-pulse: rgba(255, 179, 0, 0.45);
+}
+
+.history-live-detenido {
+  --live-accent: #a1887f;
+  --live-accent-soft: rgba(161, 136, 127, 0.18);
+  --live-accent-soft-2: rgba(161, 136, 127, 0.06);
+  --live-accent-border: rgba(161, 136, 127, 0.3);
+  --live-accent-pulse: rgba(161, 136, 127, 0.45);
+}
+
+.history-live-desconocido {
+  --live-accent: #334155;
+  --live-accent-soft: rgba(51, 65, 85, 0.14);
+  --live-accent-soft-2: rgba(51, 65, 85, 0.04);
+  --live-accent-border: rgba(51, 65, 85, 0.24);
+  --live-accent-pulse: rgba(51, 65, 85, 0.45);
+}
+
+.history-live-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--live-accent);
+  box-shadow: 0 0 0 0 var(--live-accent-pulse);
+  animation: history-pulse 2s infinite;
+  flex: 0 0 auto;
+}
+
+.history-live-label {
+  display: block;
+  margin-bottom: 2px !important;
+  color: #1d4ed8 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.history-live-value {
+  font-family: monospace !important;
+  font-weight: 900 !important;
+  font-size: 1rem !important;
+  line-height: 1 !important;
+  color: var(--live-accent) !important;
+}
+
+@keyframes history-pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--live-accent-pulse);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(25, 118, 210, 0);
+  }
+}
+
+.history-comment-cell {
+  max-width: 420px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-footer {
+  padding: 10px 16px;
+  border-top: 1px solid #e2e8f0;
+  text-align: left;
+  background: #fcfdff;
+}
+
+.history-footer-text {
+  display: block;
+  line-height: 1.45;
+  font-weight: 800 !important;
+}

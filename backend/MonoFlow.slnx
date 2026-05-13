@@ -1,0 +1,11 @@
+﻿<Solution>
+  <Folder Name="/Elementos de la solución/">
+    <File Path="bbdd_MonoFlow.sql" />
+  </Folder>
+  <Project Path="MonoFlow.api/MonoFlow.api.csproj" Id="d929693a-66c9-4e95-8d69-cb6506032646" />
+  <Project Path="MonoFlow.application.tests/MonoFlow.application.tests.csproj" />
+  <Project Path="MonoFlow.application/MonoFlow.application.csproj" Id="5e0fed46-2c0d-45d8-836d-c4a23db30d1d" />
+  <Project Path="MonoFlow.domain.tests/MonoFlow.domain.tests.csproj" />
+  <Project Path="MonoFlow.domain/MonoFlow.domain.csproj" />
+  <Project Path="MonoFlow.infrastructure/MonoFlow.infrastructure.csproj" Id="458a9bad-4c78-4bed-8342-093a9d8d7482" />
+</Solution>

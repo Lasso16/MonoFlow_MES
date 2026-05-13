@@ -1,0 +1,36 @@
+﻿using MonoFlow.domain.Aggregates.Articulos;
+using MonoFlow.domain.Aggregates.Eventos;
+using MonoFlow.domain.Aggregates.Incidencias;
+using MonoFlow.domain.Aggregates.Operaciones;
+using MonoFlow.domain.Aggregates.Operarios;
+using MonoFlow.domain.Aggregates.Ordenes;
+using MonoFlow.domain.Aggregates.Producciones;
+using MonoFlow.domain.Aggregates.ProduccionesRechazadas;
+using MonoFlow.domain.Aggregates.RegistrosTrabajo;
+using MonoFlow.domain.Aggregates.SesionesOperarios;
+using MonoFlow.domain.Aggregates.TiposEvento;
+using MonoFlow.domain.Aggregates.TiposIncidencia;
+using MonoFlow.domain.Aggregates.TiposOperacion;
+using MonoFlow.domain.Aggregates.TiposRechazo;
+
+using MediatR;
+using System;
+using System.Text.Json.Serialization;
+
+using MonoFlow.application.RegistrosTrabajo.DTOs;
+
+namespace MonoFlow.application.RegistrosTrabajo.Commands
+{
+    public class RegistrarEventoCommand : IRequest<EventoDTO>
+    {
+        [JsonIgnore]
+        public Guid OperacionId { get; set; }
+        public int IdTipoEvento { get; set; }
+
+        public RegistrarEventoCommand(Guid operacionId, int idTipoEvento)
+        {
+            OperacionId = operacionId;
+            IdTipoEvento = idTipoEvento;
+        }
+    }
+}

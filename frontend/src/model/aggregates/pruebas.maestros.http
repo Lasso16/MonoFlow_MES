@@ -1,0 +1,10 @@
+@baseUrl = https://localhost:7223
+
+### Obtener tipos de rechazo
+GET {{baseUrl}}/maestros/rechazos
+
+### Obtener tipos de incidencia
+GET {{baseUrl}}/maestros/incidencias
+
+### Obtener tipos de evento
+GET {{baseUrl}}/maestros/eventos

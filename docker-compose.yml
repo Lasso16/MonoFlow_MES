@@ -1,0 +1,97 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: monoflow-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin@1234}
+      POSTGRES_DB: ${DB_NAME:-MonoFlow_Dev}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-admin} -d ${DB_NAME:-MonoFlow_Dev}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - monoflow-network
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: monoflow-api
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${DB_NAME:-MonoFlow_Dev};Username=${DB_USER:-admin};Password=${DB_PASSWORD:-admin@1234};"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS:-http://+:5000}
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - monoflow-network
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  seeds:
+    image: postgres:16-alpine
+    container_name: monoflow-seeds
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        echo "Esperando a que el API esté listo..."
+        for i in {1..120}; do
+          if nc -z api 5000 2>/dev/null; then
+            echo "API está disponible - esperando 10 segundos antes de ejecutar seeds..."
+            sleep 10
+            break
+          fi
+          echo "Intento $$i/120 - esperando API..."
+          sleep 1
+        done
+        
+        echo "Ejecutando script unificado de datos..."
+        psql -h postgres -U ${DB_USER:-admin} -d ${DB_NAME:-MonoFlow_Dev} -f /scripts/seed_data.sql
+        
+        echo "✅ Base de datos rellenada correctamente"
+    volumes:
+      - ./backend/seed_data.sql:/scripts/seed_data.sql
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - monoflow-network
+    environment:
+      PGPASSWORD: ${DB_PASSWORD:-admin@1234}
+    restart: on-failure
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:5000}
+    container_name: monoflow-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - monoflow-network
+
+volumes:
+  postgres_data:
+
+networks:
+  monoflow-network:
+    driver: bridge

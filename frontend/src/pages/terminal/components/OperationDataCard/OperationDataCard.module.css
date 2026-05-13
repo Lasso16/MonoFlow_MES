@@ -1,0 +1,153 @@
+.operation-card {
+  border-radius: 10px !important;
+  overflow: hidden;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.operation-card-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.operation-card-title {
+  font-weight: 800 !important;
+}
+
+.operation-header-action-wrap {
+  min-width: 220px;
+}
+
+.operation-exit-button {
+  text-transform: none !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+}
+
+.operation-status-chip :global(.MuiChip-label) {
+  font-weight: 700;
+}
+
+.operation-card-body {
+  padding: 0 24px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.operation-data-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.operation-data-row-label {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 800 !important;
+}
+
+.operation-data-row-value {
+  font-weight: 600 !important;
+}
+
+.operation-tag-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 16px 0 8px;
+}
+
+.operation-count-chip :global(.MuiChip-label) {
+  font-weight: 700;
+}
+
+.operation-chip-tooltip {
+  min-width: 220px;
+  max-width: 320px;
+}
+
+.operation-chip-tooltip-title {
+  font-weight: 800 !important;
+  margin-bottom: 6px !important;
+}
+
+.operation-chip-tooltip-empty {
+  font-size: 0.85rem !important;
+  color: #cbd5e1 !important;
+}
+
+.operation-chip-tooltip-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.operation-chip-tooltip-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+  font-size: 0.8rem;
+}
+
+.operation-chip-tooltip-head {
+  font-weight: 800;
+  opacity: 0.9;
+}
+
+.operation-goal-wrap {
+  padding: 16px 0;
+}
+
+.operation-goal-row {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.operation-goal-units {
+  min-width: 130px;
+  font-weight: 800 !important;
+}
+
+.operation-goal-progress {
+  flex: 1;
+  height: 8px !important;
+  border-radius: 999px !important;
+  overflow: hidden;
+}
+
+.operation-goal-progress :global(.MuiLinearProgress-bar) {
+  border-radius: 999px;
+}
+
+.operation-goal-percent {
+  font-weight: 700 !important;
+}
+
+@media (min-width: 600px) {
+  .operation-data-row {
+    grid-template-columns: 220px 1fr;
+  }
+}
+
+@media (max-width: 599px) {
+  .operation-card-header {
+    gap: 10px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .operation-header-action-wrap {
+    width: 100%;
+    min-width: 0;
+  }
+}

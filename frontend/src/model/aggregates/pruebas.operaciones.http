@@ -1,0 +1,29 @@
+@baseUrl = https://localhost:7223
+@operacionId = d2f85b8a-6caf-4ba8-cedd-08de99fa801d
+
+### Listar operaciones (paginado)
+GET {{baseUrl}}/operaciones?pageNumber=1&pageSize=20
+
+### Obtener operacion por id
+GET {{baseUrl}}/operaciones/{{operacionId}}
+
+### Obtener progreso de operacion
+GET {{baseUrl}}/operaciones/{{operacionId}}/progreso
+
+### Obtener registros de operacion
+GET {{baseUrl}}/operaciones/{{operacionId}}/registros
+
+### Obtener resumen de operacion
+GET {{baseUrl}}/operaciones/{{operacionId}}/resumen
+
+### Actualizar operacion
+PUT {{baseUrl}}/operaciones/{{operacionId}}
+Content-Type: application/json
+
+{
+  "cantidadComponentes": 3,
+  "tiempoPlan": 60
+}
+
+### Eliminar operacion
+DELETE {{baseUrl}}/operaciones/{{operacionId}}

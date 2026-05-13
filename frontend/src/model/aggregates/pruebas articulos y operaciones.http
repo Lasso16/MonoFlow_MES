@@ -1,0 +1,79 @@
+### Variables Globales
+@baseUrl = https://localhost:7223
+@articuloId = 0EC5AF9E-7F21-4E89-71AA-08DE88C4AE90
+@operacionId = 7e0cbfc0-0c7d-494d-7f78-08de96f0d97d
+
+### ARTICULOS
+
+### Listar articulos paginados
+GET {{baseUrl}}/articulos?pageNumber=1&pageSize=20
+Accept: application/json
+
+### Obtener articulo por id
+GET {{baseUrl}}/articulos/{{articuloId}}
+Accept: application/json
+
+### Actualizar articulo
+PUT {{baseUrl}}/articulos/{{articuloId}}
+Content-Type: application/json
+
+{
+    "referencia": "ART-500-X1",
+    "descripcion": "Articulo actualizado",
+    "linea": 10,
+    "cantidad": 50,
+    "estado": "Activo"
+}
+
+### Eliminar articulo
+DELETE {{baseUrl}}/articulos/{{articuloId}}
+
+### Listar operaciones de un articulo
+GET {{baseUrl}}/articulos/{{articuloId}}/operaciones
+Accept: application/json
+
+### Agregar operacion a un articulo
+POST {{baseUrl}}/articulos/{{articuloId}}/operaciones
+Content-Type: application/json
+
+{
+    "idTipoOperacion": 1,
+    "cantidadComponentes": 2,
+    "tiempoPlan": 1.5,
+    "ultimaOperacion": false
+}
+
+### OPERACIONES
+
+### Listar operaciones paginadas
+GET {{baseUrl}}/operaciones
+Accept: application/json
+
+### Obtener operacion por id
+GET {{baseUrl}}/operaciones/{{operacionId}}
+Accept: application/json
+
+### Obtener progreso de una operacion
+GET {{baseUrl}}/operaciones/{{operacionId}}/progreso
+Accept: application/json
+
+### Obtener registros de una operacion
+GET {{baseUrl}}/operaciones/{{operacionId}}/registros
+Accept: application/json
+
+### Obtener resumen de una operacion
+GET {{baseUrl}}/operaciones/{{operacionId}}/resumen
+Accept: application/json
+
+### Actualizar operacion
+PUT {{baseUrl}}/operaciones/{{operacionId}}
+Content-Type: application/json
+
+{
+    "cantidadComponentes": 3,
+    "tiempoPlan": 2.0
+}
+
+### Eliminar operacion
+DELETE {{baseUrl}}/operaciones/{{operacionId}}
+
