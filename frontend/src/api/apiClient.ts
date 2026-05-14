@@ -12,33 +12,6 @@ const Method = {
   DELETE: "DELETE",
 } as const;
 
-export let apiToken: string | null = null;
-
-export const setApiToken = (token: string) => {
-  apiToken = token;
-};
-
-export type PagedResponse<T> = {
-  items: T[];
-  totalRecords?: number;
-  pageNumber?: number;
-  pageSize?: number;
-  totalPages?: number;
-};
-
-export type ApiPagedResponse<T> = {
-  Items?: T[];
-  TotalRecords?: number;
-  PageNumber?: number;
-  PageSize?: number;
-  TotalPages?: number;
-  items?: T[];
-  totalRecords?: number;
-  pageNumber?: number;
-  pageSize?: number;
-  totalPages?: number;
-};
-
 export const mapHttpError = (status: number): string => {
   if (status === 400) return "Solicitud invalida. Revisa los datos enviados.";
   if (status === 404) return "Recurso no encontrado.";
@@ -70,15 +43,16 @@ export const normalizeProblemDetails = (
   };
 };
 
-export const normalizePagedResult = <T>(payload: any): PagedResult<T> => {
-  const data = payload?.value ?? payload; 
+type BackendResultWrapper = { isSuccess: boolean; value?: unknown; error?: string | null };
 
-  return {
-    Items: data?.items ?? data?.Items ?? data?.$values ?? [],
-    TotalRecords: Number(data?.totalRecords ?? data?.TotalRecords ?? 0),
-    PageNumber: Number(data?.pageNumber ?? data?.PageNumber ?? 1),
-    PageSize: Number(data?.pageSize ?? data?.PageSize ?? 20),
-  };
+const isBackendResultWrapper = (json: unknown): json is BackendResultWrapper => {
+  return (
+    typeof json === "object" &&
+    json !== null &&
+    "isSuccess" in json &&
+    typeof (json as { isSuccess: unknown }).isSuccess === "boolean" &&
+    "value" in json
+  );
 };
 
 export const handleResponse = async <T>(response: Response): Promise<Result<T>> => {
@@ -86,7 +60,16 @@ export const handleResponse = async <T>(response: Response): Promise<Result<T>> 
     if (response.status === 204) return Result.success({} as T);
     try {
       const json = await response.json();
-    
+
+      if (isBackendResultWrapper(json)) {
+        if (json.isSuccess) {
+          return Result.success((json.value ?? {}) as T);
+        }
+        return Result.failure(
+          normalizeProblemDetails(response.status, { detail: json.error ?? "Error del servidor." }),
+        );
+      }
+
       return Result.success(json as T);
     } catch (e) {
       return Result.success({} as T);
@@ -110,7 +93,6 @@ export const fetchData = async (
   return await fetch(url, {
     headers: {
       "Content-type": "application/json; charset=UTF-8",
-      ...(apiToken && { Authorization: `Bearer ${apiToken}` }),
     },
     method,
     body: body || undefined,
@@ -126,11 +108,17 @@ export const getAggregateList = async <T>(url: string): Promise<Result<T>> => {
   }
 };
 
+const withPageParams = (url: string, pageNumber: number, pageSize: number): string => {
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}pageNumber=${pageNumber}&pageSize=${pageSize}`;
+};
+
 export const getAllPagedAggregateList = async <T>(url: string): Promise<Result<T[]>> => {
   try {
     const pageSize = 1000;
-    const firstPageResponse = await fetchData(url, Method.GET);
-    const firstPageResult = await handleResponse<PagedResponse<T>>(firstPageResponse);
+    const firstPageUrl = withPageParams(url, 1, pageSize);
+    const firstPageResponse = await fetchData(firstPageUrl, Method.GET);
+    const firstPageResult = await handleResponse<PagedResult<T>>(firstPageResponse);
 
     if (firstPageResult.isFailure) {
       return Result.failure<T[]>(firstPageResult.error as string | ProblemDetails);
@@ -144,20 +132,26 @@ export const getAllPagedAggregateList = async <T>(url: string): Promise<Result<T
       );
     }
 
-    const items = [...firstPage.items];
     const totalPages = firstPage.totalPages ?? 1;
 
-    for (let pageNumber = 2; pageNumber <= totalPages; pageNumber++) {
-      const pageResponse = await fetchData(
-        `${url}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-        Method.GET,
-      );
-      const pageResult = await handleResponse<PagedResponse<T>>(pageResponse);
+    if (totalPages <= 1) {
+      return Result.success([...firstPage.items]);
+    }
 
+    const remainingPages = Array.from({ length: totalPages - 1 }, (_, index) => index + 2);
+    const responses = await Promise.all(
+      remainingPages.map((pageNumber) =>
+        fetchData(withPageParams(url, pageNumber, pageSize), Method.GET).then((response) =>
+          handleResponse<PagedResult<T>>(response),
+        ),
+      ),
+    );
+
+    const items = [...firstPage.items];
+    for (const pageResult of responses) {
       if (pageResult.isFailure) {
         return Result.failure<T[]>(pageResult.error as string | ProblemDetails);
       }
-
       const page = pageResult.value;
       if (page?.items?.length) {
         items.push(...page.items);

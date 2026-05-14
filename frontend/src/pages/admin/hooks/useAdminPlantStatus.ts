@@ -21,7 +21,7 @@ export const useAdminPlantStatus = () => {
     });
 
   const articulosEnPlanta = useMemo(() => {
-    return (paged?.Items ?? [])
+    return (paged?.items ?? [])
       .filter(isArticuloVisible)
       .sort((a, b) => {
         // Artículos sin fecha finPlan van al final
@@ -56,7 +56,7 @@ export const useAdminPlantStatus = () => {
     referenciaFiltro, setReferenciaFiltro: updateFilter(setReferenciaFiltro),
     descripcionFiltro, setDescripcionFiltro: updateFilter(setDescripcionFiltro),
     estadoFiltro, setEstadoFiltro: updateFilter(setEstadoFiltro),
-    articulosEnPlanta, totalRecords: paged?.TotalRecords ?? 0,
+    articulosEnPlanta, totalRecords: paged?.totalRecords ?? 0,
     isLoading, isError, error, isFetching, refetch: handleRefresh,
     selectedOp, handleSelectOperacion, handleCloseDialog
   };

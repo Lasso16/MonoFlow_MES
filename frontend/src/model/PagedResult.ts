@@ -1,6 +1,7 @@
 export interface PagedResult<T> {
-  Items: T[];
-  TotalRecords: number;
-  PageNumber: number;
-  PageSize: number;
+  items: T[];
+  totalRecords: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages?: number;
 }

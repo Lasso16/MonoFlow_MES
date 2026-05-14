@@ -2,8 +2,7 @@ import { Result } from "../model/Result";
 import { type PagedResult } from "../model/PagedResult";
 import { type ArticuloResponse, type UpdateArticuloPayload } from "../model/aggregates/Articulos";
 import { type CreateOperacionPayload, type OperacionResponse } from "../model/aggregates/Operaciones";
-import { API_URL, deleteAggregateItem, getAggregateItem, getAggregateList, postAggregateItem, putAggregateItem, handleResponse, fetchData, normalizePagedResult } from "./apiClient";
-import type { ApiPagedResponse } from "./apiClient";
+import { API_URL, deleteAggregateItem, getAggregateItem, getAggregateList, postAggregateItem, putAggregateItem, handleResponse, fetchData } from "./apiClient";
 
 const urlArticulos = `${API_URL}/articulos`;
 
@@ -44,13 +43,13 @@ export const GET_articulos = async (
   filters?: ArticulosFilters,
 ): Promise<Result<PagedResult<ArticuloResponse>>> => {
   const response = await fetchData(`${urlArticulos}${buildArticulosQuery(pageNumber, pageSize, filters)}`, "GET");
-  const result = await handleResponse<ApiPagedResponse<ArticuloResponse>>(response);
+  const result = await handleResponse<PagedResult<ArticuloResponse>>(response);
 
   if (result.isFailure) {
     return Result.failure<PagedResult<ArticuloResponse>>(result.error ?? "No se pudo obtener la lista de articulos.");
   }
 
-  return Result.success(normalizePagedResult(result.value));
+  return result;
 };
 
 export const GET_articuloById = async (id: string): Promise<Result<ArticuloResponse>> => {

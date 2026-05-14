@@ -19,21 +19,8 @@ const extractOperarios = (payload: unknown): Operario[] => {
   if (Array.isArray(payload)) return payload as Operario[];
 
   if (payload && typeof payload === 'object') {
-    const data = payload as {
-      items?: unknown;
-      Items?: unknown;
-      value?: unknown;
-    };
-
+    const data = payload as { items?: unknown };
     if (Array.isArray(data.items)) return data.items as Operario[];
-    if (Array.isArray(data.Items)) return data.Items as Operario[];
-    if (Array.isArray(data.value)) return data.value as Operario[];
-
-    if (data.value && typeof data.value === 'object') {
-      const nested = data.value as { items?: unknown; Items?: unknown };
-      if (Array.isArray(nested.items)) return nested.items as Operario[];
-      if (Array.isArray(nested.Items)) return nested.Items as Operario[];
-    }
   }
 
   return [];

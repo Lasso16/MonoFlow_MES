@@ -42,7 +42,7 @@ describe('Hook: useAdminPlantStatus', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useGetArticulosPaged).mockReturnValue({
-      data: { Items: [], TotalRecords: 0, PageNumber: 1, PageSize: 10 },
+      data: { items: [], totalRecords: 0, pageNumber: 1, pageSize: 10 },
       isLoading: false,
       isError: false,
       error: null,
@@ -72,7 +72,7 @@ describe('Hook: useAdminPlantStatus', () => {
       makeArticulo('B', '2026-05-01', false),
     ];
     vi.mocked(useGetArticulosPaged).mockReturnValue({
-      data: { Items: items, TotalRecords: 2, PageNumber: 1, PageSize: 10 },
+      data: { items: items, totalRecords: 2, pageNumber: 1, pageSize: 10 },
       isLoading: false, isError: false, error: null, isFetching: false, refetch: mockRefetch,
     } as any);
 
@@ -89,7 +89,7 @@ describe('Hook: useAdminPlantStatus', () => {
       makeArticulo('medio', '2026-06-01'),
     ];
     vi.mocked(useGetArticulosPaged).mockReturnValue({
-      data: { Items: items, TotalRecords: 3, PageNumber: 1, PageSize: 10 },
+      data: { items: items, totalRecords: 3, pageNumber: 1, pageSize: 10 },
       isLoading: false, isError: false, error: null, isFetching: false, refetch: mockRefetch,
     } as any);
 
@@ -105,7 +105,7 @@ describe('Hook: useAdminPlantStatus', () => {
       makeArticulo('con-fecha', '2026-03-01'),
     ];
     vi.mocked(useGetArticulosPaged).mockReturnValue({
-      data: { Items: items, TotalRecords: 2, PageNumber: 1, PageSize: 10 },
+      data: { items: items, totalRecords: 2, pageNumber: 1, pageSize: 10 },
       isLoading: false, isError: false, error: null, isFetching: false, refetch: mockRefetch,
     } as any);
 
@@ -162,9 +162,9 @@ describe('Hook: useAdminPlantStatus', () => {
     expect(result.current.page).toBe(0);
   });
 
-  it('totalRecords viene de TotalRecords de la API', () => {
+  it('totalRecords viene de totalRecords de la API', () => {
     vi.mocked(useGetArticulosPaged).mockReturnValue({
-      data: { Items: [], TotalRecords: 42, PageNumber: 1, PageSize: 10 },
+      data: { items: [], totalRecords: 42, pageNumber: 1, pageSize: 10 },
       isLoading: false, isError: false, error: null, isFetching: false, refetch: mockRefetch,
     } as any);
 

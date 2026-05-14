@@ -32,7 +32,7 @@ export const useAdminOrders = () => {
   );
 
   const ordenesFiltradas = useMemo(() => {
-    const items = data?.Items ?? [];
+    const items = data?.items ?? [];
 
     if (filters.estados.length === 0) {
       return items;
@@ -46,7 +46,7 @@ export const useAdminOrders = () => {
       const ordenEstadoKind = getEstadoKind(orden.estado);
       return selectedEstadoKinds.has(ordenEstadoKind);
     });
-  }, [data?.Items, filters.estados]);
+  }, [data?.items, filters.estados]);
 
   const toggleEstado = (estado: string) => {
     setFilters((current) => ({
@@ -90,7 +90,7 @@ export const useAdminOrders = () => {
     ordenes: ordenesFiltradas,
     totalRecords:
       filters.estados.length === 0
-        ? data?.TotalRecords ?? 0
+        ? data?.totalRecords ?? 0
         : ordenesFiltradas.length,
     isLoading,
     isError,

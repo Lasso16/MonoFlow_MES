@@ -46,7 +46,7 @@ describe('Hook: useAdminReports', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useGetOrdenes).mockReturnValue({
-      data: { Items: [], TotalRecords: 0 },
+      data: { items: [], totalRecords: 0 },
       isLoading: false,
       isError: false,
     } as any);
@@ -66,7 +66,7 @@ describe('Hook: useAdminReports', () => {
 
   it('handleSearch guarda el searchTerm como searchQuery y limpia selección', async () => {
     vi.mocked(useGetOrdenes).mockReturnValue({
-      data: { Items: [makeOrden('1')], TotalRecords: 1 },
+      data: { items: [makeOrden('1')], totalRecords: 1 },
       isLoading: false,
       isError: false,
     } as any);
@@ -79,10 +79,10 @@ describe('Hook: useAdminReports', () => {
     expect(vi.mocked(useGetOrdenes).mock.calls.at(-1)?.[2]).toEqual({ idNavision: 'NAV-001' });
   });
 
-  it('ordenes viene de data.Items de la query', () => {
+  it('ordenes viene de data.items de la query', () => {
     const ordenes = [makeOrden('1'), makeOrden('2')];
     vi.mocked(useGetOrdenes).mockReturnValue({
-      data: { Items: ordenes, TotalRecords: 2 },
+      data: { items: ordenes, totalRecords: 2 },
       isLoading: false,
       isError: false,
     } as any);

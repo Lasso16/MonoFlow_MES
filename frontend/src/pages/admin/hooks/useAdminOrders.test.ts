@@ -23,7 +23,7 @@ describe('Hook: useAdminOrders', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useGetOrdenes).mockReturnValue({
-      data: { Items: [], TotalRecords: 0, PageNumber: 1, PageSize: 20 },
+      data: { items: [], totalRecords: 0, pageNumber: 1, pageSize: 20 },
       isLoading: false,
       isError: false,
       isFetching: false,
@@ -42,10 +42,10 @@ describe('Hook: useAdminOrders', () => {
     expect(result.current.totalRecords).toBe(0);
   });
 
-  it('Sin filtro de estados: devuelve todos los items y usa TotalRecords de la API', () => {
+  it('Sin filtro de estados: devuelve todos los items y usa totalRecords de la API', () => {
     const items = [makeOrden('1', 'Pendiente'), makeOrden('2', 'En curso')];
     vi.mocked(useGetOrdenes).mockReturnValue({
-      data: { Items: items, TotalRecords: 50, PageNumber: 1, PageSize: 20 },
+      data: { items: items, totalRecords: 50, pageNumber: 1, pageSize: 20 },
       isLoading: false, isError: false, isFetching: false, error: null,
     } as any);
 
@@ -58,7 +58,7 @@ describe('Hook: useAdminOrders', () => {
   it('toggleEstado añade estado y resetea página', () => {
     const items = [makeOrden('1', 'Pendiente'), makeOrden('2', 'En curso')];
     vi.mocked(useGetOrdenes).mockReturnValue({
-      data: { Items: items, TotalRecords: 2, PageNumber: 1, PageSize: 20 },
+      data: { items: items, totalRecords: 2, pageNumber: 1, pageSize: 20 },
       isLoading: false, isError: false, isFetching: false, error: null,
     } as any);
 
@@ -89,7 +89,7 @@ describe('Hook: useAdminOrders', () => {
       makeOrden('3', 'Finalizada'),
     ];
     vi.mocked(useGetOrdenes).mockReturnValue({
-      data: { Items: items, TotalRecords: 100, PageNumber: 1, PageSize: 20 },
+      data: { items: items, totalRecords: 100, pageNumber: 1, pageSize: 20 },
       isLoading: false, isError: false, isFetching: false, error: null,
     } as any);
 

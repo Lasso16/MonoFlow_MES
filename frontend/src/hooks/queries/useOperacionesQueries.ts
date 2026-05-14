@@ -39,21 +39,8 @@ const extractOperaciones = (payload: unknown): OperacionResponse[] => {
   if (Array.isArray(payload)) return payload.map(normalizeOperacion);
 
   if (payload && typeof payload === 'object') {
-    const data = payload as {
-      items?: unknown;
-      Items?: unknown;
-      value?: unknown;
-    };
-
+    const data = payload as { items?: unknown };
     if (Array.isArray(data.items)) return data.items.map(normalizeOperacion);
-    if (Array.isArray(data.Items)) return data.Items.map(normalizeOperacion);
-    if (Array.isArray(data.value)) return data.value.map(normalizeOperacion);
-
-    if (data.value && typeof data.value === 'object') {
-      const nested = data.value as { items?: unknown; Items?: unknown };
-      if (Array.isArray(nested.items)) return nested.items.map(normalizeOperacion);
-      if (Array.isArray(nested.Items)) return nested.Items.map(normalizeOperacion);
-    }
   }
 
   return [];
@@ -63,23 +50,14 @@ const extractRegistros = (payload: unknown): OperacionRegistroResponse[] => {
   if (Array.isArray(payload)) return payload as OperacionRegistroResponse[];
 
   if (payload && typeof payload === 'object') {
-    const data = payload as { value?: unknown; items?: unknown; Items?: unknown };
+    const data = payload as { items?: unknown };
     if (Array.isArray(data.items)) return data.items as OperacionRegistroResponse[];
-    if (Array.isArray(data.Items)) return data.Items as OperacionRegistroResponse[];
-    if (Array.isArray(data.value)) return data.value as OperacionRegistroResponse[];
   }
 
   return [];
 };
 
 const extractOperacionResumen = (payload: unknown): OperacionResumenResponse => {
-  if (payload && typeof payload === 'object') {
-    const data = payload as { value?: unknown };
-    if (data.value && typeof data.value === 'object') {
-      return data.value as OperacionResumenResponse;
-    }
-  }
-
   return (payload ?? {}) as OperacionResumenResponse;
 };
 

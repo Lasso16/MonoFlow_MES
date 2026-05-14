@@ -53,15 +53,8 @@ const extractTiposOperacion = (payload: unknown): TipoOperacion[] => {
   if (Array.isArray(payload)) return payload as TipoOperacion[];
 
   if (payload && typeof payload === 'object') {
-    const data = payload as {
-      items?: unknown;
-      Items?: unknown;
-      value?: unknown;
-    };
-
+    const data = payload as { items?: unknown };
     if (Array.isArray(data.items)) return data.items as TipoOperacion[];
-    if (Array.isArray(data.Items)) return data.Items as TipoOperacion[];
-    if (Array.isArray(data.value)) return data.value as TipoOperacion[];
   }
 
   return [];

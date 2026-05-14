@@ -9,7 +9,7 @@ import {
   type OrdenFilters,
   type UpdateOrden,
 } from "../model/aggregates/Ordenes";
-import { API_URL, deleteAggregateItem, getAggregateItem, getAggregateList, normalizePagedResult, postAggregate, postAggregateItem, putAggregateItem } from "./apiClient";
+import { API_URL, deleteAggregateItem, getAggregateItem, getAggregateList, postAggregate, postAggregateItem, putAggregateItem } from "./apiClient";
 
 const urlOrdenes = `${API_URL}/ordenes`;
 
@@ -65,15 +65,9 @@ export const GET_ordenes = async (
   pageSize = 20,
   filters?: OrdenFilters,
 ): Promise<Result<PagedResult<Orden>>> => {
-  const result = await getAggregateList<any>(
+  return await getAggregateList<PagedResult<Orden>>(
     `${urlOrdenes}${buildOrdenesQuery(pageNumber, pageSize, filters)}`,
   );
-
-  if (result.isFailure) {
-    return Result.failure<PagedResult<Orden>>(result.error ?? "Error al obtener órdenes.");
-  }
-
-  return Result.success(normalizePagedResult<Orden>(result.value));
 };
 
 export const GET_estadoPlanta = async (): Promise<Result<unknown>> => {

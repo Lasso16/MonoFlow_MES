@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-// 🔥 IMPORTAMOS LAS NUEVAS FUNCIONES DIRECTAMENTE DESDE EL BARRIL
 import {
   GET_ordenes,
   GET_ordenById,
@@ -36,48 +35,19 @@ export const extractOrdenes = (payload: unknown): Orden[] => {
   if (Array.isArray(payload)) return payload as Orden[];
 
   if (payload && typeof payload === 'object') {
-    const data = payload as {
-      items?: unknown;
-      Items?: unknown;
-      value?: unknown;
-    };
-
+    const data = payload as { items?: unknown };
     if (Array.isArray(data.items)) return data.items as Orden[];
-    if (Array.isArray(data.Items)) return data.Items as Orden[];
-    if (Array.isArray(data.value)) return data.value as Orden[];
-
-    if (data.value && typeof data.value === 'object') {
-      const nested = data.value as { items?: unknown; Items?: unknown };
-      if (Array.isArray(nested.items)) return nested.items as Orden[];
-      if (Array.isArray(nested.Items)) return nested.Items as Orden[];
-    }
   }
 
   return [];
-};
-
-export const extractPagedOrdenes = (payload: any): PagedResult<Orden> => {
-  // 1. Entramos al envoltorio "value" que devuelve el backend C#
-  const data = payload?.value ?? payload;
-
-  // 2. Extraemos el array real
-  const items = data?.items ?? data?.Items ?? data?.$values ?? [];
-  return {
-    Items: items, // AdminOrdersPage lee data?.Items (con mayúscula)
-    TotalRecords: Number(data?.totalRecords ?? data?.TotalRecords ?? items.length),
-    PageNumber: Number(data?.pageNumber ?? data?.PageNumber ?? 1),
-    PageSize: Number(data?.pageSize ?? data?.PageSize ?? 20),
-  };
 };
 
 const extractEstadoPlanta = (payload: unknown): EstadoPlantaDTO[] => {
   if (Array.isArray(payload)) return payload as EstadoPlantaDTO[];
 
   if (payload && typeof payload === 'object') {
-    const data = payload as { value?: unknown; items?: unknown; Items?: unknown };
-    if (Array.isArray(data.value)) return data.value as EstadoPlantaDTO[];
+    const data = payload as { items?: unknown };
     if (Array.isArray(data.items)) return data.items as EstadoPlantaDTO[];
-    if (Array.isArray(data.Items)) return data.Items as EstadoPlantaDTO[];
   }
 
   return [];

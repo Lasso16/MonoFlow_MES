@@ -7,8 +7,7 @@ import {
   type OperacionResumenResponse,
   type UpdateOperacionPayload,
 } from "../model/aggregates/Operaciones";
-import { API_URL, deleteAggregateItem, getAggregateItem, getAggregateList, putAggregateItem, handleResponse, fetchData, normalizePagedResult } from "./apiClient";
-import type { ApiPagedResponse } from "./apiClient";
+import { API_URL, deleteAggregateItem, getAggregateItem, getAggregateList, putAggregateItem, handleResponse, fetchData } from "./apiClient";
 
 const urlOperaciones = `${API_URL}/operaciones`;
 
@@ -24,13 +23,13 @@ export const GET_operaciones = async (
   pageSize = 20,
 ): Promise<Result<PagedResult<OperacionResponse>>> => {
   const response = await fetchData(`${urlOperaciones}${buildPaginationQuery(pageNumber, pageSize)}`, "GET");
-  const result = await handleResponse<ApiPagedResponse<OperacionResponse>>(response);
+  const result = await handleResponse<PagedResult<OperacionResponse>>(response);
 
   if (result.isFailure) {
     return Result.failure<PagedResult<OperacionResponse>>(result.error ?? "No se pudo obtener la lista de operaciones.");
   }
 
-  return Result.success(normalizePagedResult(result.value));
+  return result;
 };
 
 export const GET_operacionById = async (id: string): Promise<Result<OperacionResponse>> => {

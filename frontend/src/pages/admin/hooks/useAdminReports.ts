@@ -109,7 +109,7 @@ export const useAdminReports = () => {
 
   return {
     searchTerm, setSearchTerm, handleSearch,
-    ordenes: data?.Items ?? [], loadingOrders, ordersError,
+    ordenes: data?.items ?? [], loadingOrders, ordersError,
     selectedOrden, handleSelectOrden,
     operaciones, loadingOps, selectedOperacion, setSelectedOperacion,
     handleExport, isExporting, error
