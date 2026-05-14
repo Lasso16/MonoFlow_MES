@@ -1,4 +1,4 @@
-﻿using MonoFlow.domain.Aggregates.Articulos;
+using MonoFlow.domain.Aggregates.Articulos;
 using MonoFlow.domain.Aggregates.Eventos;
 using MonoFlow.domain.Aggregates.Incidencias;
 using MonoFlow.domain.Aggregates.Operaciones;
@@ -24,6 +24,11 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Missing ConnectionStrings:DefaultConnection. Provide it via env var (e.g., ConnectionStrings__DefaultConnection) or User Secrets.");
+}
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(IAppDbContext).Assembly);
@@ -63,52 +68,59 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-    }); builder.Services.AddEndpointsApiExplorer();
+    });
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHealthChecks();
 
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? Array.Empty<string>();
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()
+        if (allowedOrigins.Length == 0)
+        {
+            return;
+        }
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
-    
+
 
 var app = builder.Build();
 
 app.MapHealthChecks("/health");
 
-app.UseCors("AllowAll");
+app.UseCors();
 
 app.UseExceptionHandler();
 
-// 1. SWAGGER SIEMPRE ACTIVO Y EN LA RUTA RAÍZ
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "MonoFlow API");
-    c.RoutePrefix = string.Empty; // <-- ESTO ES LA MAGIA: Carga Swagger en localhost:5000/
+    c.RoutePrefix = string.Empty;
 });
 
-// 2. Comentamos la redirección HTTPS que da problemas de 404 en Docker local
 // app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.MapControllers();
 
-// 3. Inicialización de la BD
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
         var context = services.GetRequiredService<AppDbContext>();
-        context.Database.EnsureCreated();
+        await context.Database.MigrateAsync();
         Console.WriteLine("Base de datos lista.");
     }
     catch (Exception ex)

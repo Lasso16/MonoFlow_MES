@@ -26,6 +26,7 @@ services:
     container_name: monoflow-api
     environment:
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${DB_NAME:-MonoFlow_Dev};Username=${DB_USER:-admin};Password=${DB_PASSWORD:-admin@1234};"
+      Cors__AllowedOrigins__0: ${CORS_ORIGIN_0:-http://localhost}
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       ASPNETCORE_URLS: ${ASPNETCORE_URLS:-http://+:5000}
     ports:
