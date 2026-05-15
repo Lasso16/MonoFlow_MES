@@ -145,7 +145,7 @@ WITH operations AS (
     SELECT 'ORD-008', 'REF-F002', 2, 30, 20.0, true
 )
 INSERT INTO operaciones (id, id_articulo, id_tipo_operacion, cantidad_componentes, cantidad_total, tiempo_plan, tiempo_total, ultima_operacion, estado, inicio, fin)
-SELECT gen_random_uuid(), a.id, o.tipo_op, NULL, o.cantidad, o.tiempo_plan, 0, o.ultima, NULL, NULL, NULL
+SELECT gen_random_uuid(), a.id, o.tipo_op, NULL, o.cantidad, o.tiempo_plan, 0, o.ultima, 'Pendiente', NULL, NULL
 FROM operations o
 JOIN articulos a ON a.referencia = o.art_ref
 JOIN ordenes ord ON ord.id = a.id_orden AND ord.id_navision = o.orden_ref

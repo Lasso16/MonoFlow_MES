@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -19,6 +20,7 @@ type ProduccionDialogProps = {
   selectedRechazoId: string;
   rechazoComentario: string;
   tiposRechazo: TipoRechazo[];
+  errorMessage?: string | null;
   onClose: () => void;
   onPiezasBuenasChange: (value: string) => void;
   onPiezasRechazadasChange: (value: string) => void;
@@ -40,6 +42,7 @@ export const ProduccionDialog = ({
   selectedRechazoId,
   rechazoComentario,
   tiposRechazo,
+  errorMessage,
   onClose,
   onPiezasBuenasChange,
   onPiezasRechazadasChange,
@@ -106,6 +109,11 @@ export const ProduccionDialog = ({
               placeholder="Comentario opcional"
             />
           </>
+        )}
+        {errorMessage && (
+          <Alert severity="error" sx={{ mt: 1 }}>
+            {errorMessage}
+          </Alert>
         )}
       </DialogContent>
       <DialogActions>

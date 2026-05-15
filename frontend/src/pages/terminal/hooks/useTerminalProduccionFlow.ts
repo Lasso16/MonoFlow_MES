@@ -24,6 +24,7 @@ export const useTerminalProduccionFlow = ({
   const [selectedRechazoId, setSelectedRechazoId] = useState("");
   const [rechazoComentario, setRechazoComentario] = useState("");
   const [isAvancePendiente, setIsAvancePendiente] = useState(false);
+  const [produccionDialogError, setProduccionDialogError] = useState<string | null>(null);
 
   const handleOpenProduccionDialog = (forAvance = false) => {
     setIsAvancePendiente(forAvance);
@@ -31,6 +32,7 @@ export const useTerminalProduccionFlow = ({
     setPiezasRechazadasText("");
     setSelectedRechazoId("");
     setRechazoComentario("");
+    setProduccionDialogError(null);
     setIsProduccionDialogOpen(true);
   };
 
@@ -41,7 +43,11 @@ export const useTerminalProduccionFlow = ({
     setSelectedRechazoId("");
     setRechazoComentario("");
     setIsAvancePendiente(false);
+    setProduccionDialogError(null);
   };
+
+  const isSubmittingProduccion =
+    registrarProduccionMutation.isPending || registrarRechazoMutation.isPending;
 
   const handleConfirmProduccion = () => {
     if (!operacionId) return;
@@ -50,37 +56,51 @@ export const useTerminalProduccionFlow = ({
     const piezasRechazadas = Number(piezasRechazadasText || "0");
     const hasBuenas = Number.isFinite(piezasBuenas) && piezasBuenas > 0;
     const hasRechazadas = Number.isFinite(piezasRechazadas) && piezasRechazadas > 0;
-
     const shouldAvanzar = isAvancePendiente && nextEventoTipo !== null;
 
-    resetProduccionDialogState();
+    setProduccionDialogError(null);
+
+    const finalizarConExito = () => {
+      resetProduccionDialogState();
+      if (shouldAvanzar) {
+        registrarEventoMutation.mutate(
+          { operacionId, payload: { idTipoEvento: nextEventoTipo } },
+          { onError: (error) => onError(error.message || "No se pudo cambiar de evento.") }
+        );
+      }
+    };
+
+    const registrarRechazoPart = () => {
+      if (hasRechazadas) {
+        registrarRechazoMutation.mutate(
+          {
+            operacionId,
+            payload: {
+              cantidad: piezasRechazadas,
+              idTipoRechazo: Number(selectedRechazoId),
+              comentario: rechazoComentario.trim() || null,
+            },
+          },
+          {
+            onSuccess: finalizarConExito,
+            onError: (error) => setProduccionDialogError(error.message || "Error al registrar rechazo."),
+          }
+        );
+      } else {
+        finalizarConExito();
+      }
+    };
 
     if (hasBuenas) {
       registrarProduccionMutation.mutate(
         { operacionId, payload: { cantidad: piezasBuenas } },
-        { onError: (error) => onError(error.message || "Error al registrar piezas buenas.") }
-      );
-    }
-
-    if (hasRechazadas) {
-      registrarRechazoMutation.mutate(
         {
-          operacionId,
-          payload: {
-            cantidad: piezasRechazadas,
-            idTipoRechazo: Number(selectedRechazoId),
-            comentario: rechazoComentario.trim() || null,
-          },
-        },
-        { onError: (error) => onError(error.message || "Error al registrar rechazo.") }
+          onSuccess: registrarRechazoPart,
+          onError: (error) => setProduccionDialogError(error.message || "Error al registrar piezas buenas."),
+        }
       );
-    }
-
-    if (shouldAvanzar) {
-      registrarEventoMutation.mutate(
-        { operacionId, payload: { idTipoEvento: nextEventoTipo } },
-        { onError: (error) => onError(error.message || "No se pudo cambiar de evento.") }
-      );
+    } else {
+      registrarRechazoPart();
     }
   };
 
@@ -91,6 +111,7 @@ export const useTerminalProduccionFlow = ({
     selectedRechazoId, setSelectedRechazoId,
     rechazoComentario, setRechazoComentario,
     isAvancePendiente, setIsAvancePendiente,
+    produccionDialogError, isSubmittingProduccion,
     handleOpenProduccionDialog, handleConfirmProduccion,
   };
 };

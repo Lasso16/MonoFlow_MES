@@ -50,6 +50,8 @@ type BuildPropsArgs = {
   piezasRechazadasText: string;
   selectedRechazoId: string;
   rechazoComentario: string;
+  produccionDialogError?: string | null;
+  isSubmittingProduccion?: boolean;
   setIsProduccionDialogOpen: (o: boolean) => void;
   setPiezasBuenasText: (t: string) => void;
   setPiezasRechazadasText: (t: string) => void;
@@ -95,7 +97,7 @@ export const buildTerminalProps = (args: BuildPropsArgs) => {
     pauseDialogProps: { open: args.isPauseDialogOpen, pauseReason: args.pauseReason, onClose: () => args.setIsPauseDialogOpen(false), onPauseReasonChange: args.setPauseReason, onConfirm: args.handleConfirmPause, isConfirmLoading: false },
     observacionDialogProps: { open: args.isObservacionDialogOpen, observacion: args.observacionText, onClose: () => args.setIsObservacionDialogOpen(false), onObservacionChange: args.setObservacionText, onConfirm: args.handleConfirmObservacion, isConfirmLoading: false },
     incidenciaDialogProps: { open: args.isIncidenciaDialogOpen, incidencias: args.tiposIncidencia, selectedIncidenciaId: args.selectedIncidenciaId, comentario: args.incidenciaComentario, onClose: () => args.setIsIncidenciaDialogOpen(false), onSelectedIncidenciaIdChange: args.setSelectedIncidenciaId, onComentarioChange: args.setIncidenciaComentario, onConfirm: args.handleConfirmIncidencia, isConfirmLoading: false },
-    produccionDialogProps: { open: args.isProduccionDialogOpen, piezasBuenas: args.piezasBuenasText, piezasRechazadas: args.piezasRechazadasText, selectedRechazoId: args.selectedRechazoId, rechazoComentario: args.rechazoComentario, tiposRechazo: args.tiposRechazoNormalizados, onClose: () => args.setIsProduccionDialogOpen(false), onPiezasBuenasChange: args.setPiezasBuenasText, onPiezasRechazadasChange: args.setPiezasRechazadasText, onSelectedRechazoIdChange: args.setSelectedRechazoId, onRechazoComentarioChange: args.setRechazoComentario, onConfirm: args.handleConfirmProduccion, isConfirmLoading: false }
+    produccionDialogProps: { open: args.isProduccionDialogOpen, piezasBuenas: args.piezasBuenasText, piezasRechazadas: args.piezasRechazadasText, selectedRechazoId: args.selectedRechazoId, rechazoComentario: args.rechazoComentario, tiposRechazo: args.tiposRechazoNormalizados, errorMessage: args.produccionDialogError, onClose: () => args.setIsProduccionDialogOpen(false), onPiezasBuenasChange: args.setPiezasBuenasText, onPiezasRechazadasChange: args.setPiezasRechazadasText, onSelectedRechazoIdChange: args.setSelectedRechazoId, onRechazoComentarioChange: args.setRechazoComentario, onConfirm: args.handleConfirmProduccion, isConfirmLoading: args.isSubmittingProduccion ?? false }
   };
 
   return { terminalControlsProps, dialogsProps };

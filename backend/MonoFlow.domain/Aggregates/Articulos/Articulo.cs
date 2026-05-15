@@ -75,7 +75,7 @@ namespace MonoFlow.domain.Aggregates.Articulos
         
         public EstadoArticulo CalcularEstado()
         {
-            if (!_operaciones.Any() || _operaciones.All(o => o.Estado == EstadoOperacion.Pendiente))
+            if (!_operaciones.Any() || _operaciones.All(o => o.Estado == null || o.Estado == EstadoOperacion.Pendiente))
                 return EstadoArticulo.PENDIENTE;
 
             if (_operaciones.All(o => o.Estado == EstadoOperacion.FinProduccion))
